@@ -1,0 +1,55 @@
+// src/components/Login.tsx
+
+import React from 'react';
+import { useForm } from 'react-hook-form';
+
+interface FormData {
+  email: string;
+  password: string;
+}
+
+const Login: React.FC = () => {
+  const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
+
+  const onSubmit = (data: FormData) => {
+    // Aqui você pode implementar a lógica de autenticação
+    console.log('Dados do login:', data);
+    // Simulação de autenticação
+    if (data.email === 'user@example.com' && data.password === 'password') {
+      alert('Login bem-sucedido!');
+    } else {
+      alert('Credenciais inválidas');
+    }
+  };
+
+  return (
+    <div style={{ maxWidth: '400px', margin: 'auto', padding: '20px', border: '1px solid #ccc' }}>
+      <h2>Login</h2>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div>
+          <label htmlFor="email">Email:</label>
+          <input 
+            type="email" 
+            id="email" 
+            {...register('email', { required: 'Email é obrigatório', pattern: { value: /^\S+@\S+$/i, message: 'Email inválido' } })} 
+          />
+          {errors.email && <span>{errors.email.message}</span>}
+        </div>
+
+        <div>
+          <label htmlFor="password">Senha:</label>
+          <input 
+            type="password" 
+            id="password" 
+            {...register('password', { required: 'Senha é obrigatória', minLength: { value: 6, message: 'Senha deve ter pelo menos 6 caracteres' } })} 
+          />
+          {errors.password && <span>{errors.password.message}</span>}
+        </div>
+
+        <button type="submit">Entrar</button>
+      </form>
+    </div>
+  );
+};
+
+export default Login;
